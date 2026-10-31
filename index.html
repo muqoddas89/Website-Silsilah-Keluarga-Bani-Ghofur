@@ -1,0 +1,3285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>Silsilah Keluarga Besar K.H. Abdul Ghofur (Bani Ghofur)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --primary: #0f766e;
+      --primary-hover: #115e59;
+      --primary-light: #ccfbf1;
+      --accent: #d97706;
+      --accent-light: #fef3c7;
+      --kin-border: #7c3aed;
+      --kin-bg: #f3e8ff;
+      --kin-text: #5b21b6;
+      --male-border: #0284c7;
+      --male-bg: #f0f9ff;
+      --female-border: #db2777;
+      --female-bg: #fdf2f8;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --line-color: #cbd5e1;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --radius: 14px;
+      --shadow: 0 4px 15px -2px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    body.role-umum .admin-only {
+      display: none !important;
+    }
+
+    /* =====================================================
+       HOMEPAGE / WELCOME SCREEN MINIMALIS & RESPONSIF
+       ===================================================== */
+    #welcome-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: radial-gradient(circle at center, #115e59 0%, #042f2e 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+      overflow-y: auto;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    #welcome-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-minimal-box {
+      max-width: 480px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto;
+      padding: 16px 8px;
+    }
+
+    /* Foto Simbah Ghofur Tanpa Bingkai & Background Transparan */
+    .welcome-photo-clean {
+      width: clamp(190px, 44vw, 270px);
+      height: auto;
+      background: transparent;
+      border: none;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .welcome-photo-clean img {
+      width: 100%;
+      height: auto;
+      max-height: clamp(230px, 50vw, 330px);
+      object-fit: contain;
+      background: transparent;
+      border: none;
+      display: block;
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.45));
+    }
+
+    /* Judul / Nama Website */
+    .welcome-title {
+      font-size: clamp(1.35rem, 4vw, 1.95rem);
+      font-weight: 800;
+      line-height: 1.3;
+      color: #ffffff;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .welcome-title span {
+      display: block;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-weight: 600;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    /* Tombol Besar & Dominan: Buka Silsilah */
+    .btn-open-silsilah {
+      width: 100%;
+      max-width: 340px;
+      padding: 17px 28px;
+      font-size: clamp(1.05rem, 3vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 12px 28px -4px rgba(245, 158, 11, 0.55);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    }
+
+    .btn-open-silsilah:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 32px -4px rgba(245, 158, 11, 0.7);
+      filter: brightness(1.05);
+    }
+
+    .btn-open-silsilah:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    /* Link Admin Sangat Kecil di Bawah Tombol Utama */
+    .link-admin-small {
+      margin-top: 16px;
+      background: transparent;
+      border: none;
+      color: rgba(226, 232, 240, 0.48);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      padding: 4px 10px;
+      transition: color 0.15s ease;
+    }
+
+    .link-admin-small:hover {
+      color: #fde68a;
+    }
+
+    /* =====================================================
+       TOP BAR & HALAMAN UTAMA SILSILAH
+       ===================================================== */
+    .account-bar {
+      background: #09423c;
+      color: #e2e8f0;
+      padding: 8px 20px;
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      z-index: 30;
+    }
+
+    .account-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .role-badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .role-badge.admin { background: #f59e0b; color: #fff; }
+    .role-badge.umum { background: rgba(255, 255, 255, 0.2); color: #fff; }
+
+    .account-btn {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .account-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+    /* Header & Statistik */
+    header {
+      background: linear-gradient(135deg, #115e59 0%, #0f766e 100%);
+      color: white;
+      padding: 20px 16px 18px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    header h1 {
+      font-size: clamp(1.2rem, 2.8vw, 1.65rem);
+      font-weight: 700;
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    header p {
+      font-size: clamp(0.8rem, 1.8vw, 0.92rem);
+      opacity: 0.9;
+      max-width: 620px;
+      margin: 0 auto 14px;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    /* Toolbar Kontrol & Menu Admin */
+    .toolbar {
+      background: var(--surface);
+      padding: 10px 18px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 25;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-ActionBar {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .admin-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filters-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex: 1;
+      min-width: 260px;
+      align-items: center;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+      gap: 6px;
+    }
+
+    .search-input, .select-filter {
+      padding: 9px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      outline: none;
+      background: #f8fafc;
+      min-height: 40px;
+    }
+
+    .search-input { width: 100%; }
+
+    .search-input:focus, .select-filter:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    }
+
+    .mobile-filter-toggle { display: none; }
+
+    .collapsible-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* Navigasi Hasil Pencarian di Bagan */
+    .search-nav-box {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #92400e;
+      white-space: nowrap;
+    }
+
+    .search-nav-box.show { display: inline-flex; }
+
+    .search-nav-btn {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      border-radius: 6px;
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .search-nav-btn:hover { background: #f59e0b; color: #fff; }
+
+    .view-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 8px 13px;
+      min-height: 38px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: var(--text-main);
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      user-select: none;
+    }
+
+    .btn:hover { background: #f1f5f9; }
+    .btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-accent { background: var(--accent); color: white; border-color: var(--accent); }
+    .btn-accent:hover { background: #b45309; }
+    .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #fecaca; }
+    .btn-danger:hover { background: #fee2e2; }
+
+    /* Area Kanvas Bagan Pohon */
+    #tree-viewport {
+      flex: 1;
+      overflow: auto;
+      padding: 30px 20px 90px;
+      cursor: grab;
+      position: relative;
+      user-select: none;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y;
+    }
+
+    #tree-viewport.dragging {
+      cursor: grabbing;
+      scroll-behavior: auto !important;
+    }
+
+    #tree-scale-wrapper {
+      display: inline-block;
+      min-width: 100%;
+      text-align: center;
+    }
+
+    #tree-canvas {
+      display: inline-block;
+      transform-origin: top left;
+      transition: transform 0.12s ease-out;
+      padding: 20px 60px 60px;
+    }
+
+    /* Floating Zoom & Center Dock */
+    .floating-dock {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 22;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      border: 1px solid #cbd5e1;
+      padding: 6px;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18);
+    }
+
+    .dock-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .dock-btn:hover, .dock-btn:active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .dock-zoom-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0 6px;
+      color: var(--text-main);
+      min-width: 44px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    /* CSS Hierarki Pohon Silsilah */
+    .tree ul {
+      padding-top: 22px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tree li {
+      text-align: center;
+      list-style-type: none;
+      position: relative;
+      padding: 22px 8px 0 8px;
+    }
+
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 2px solid var(--line-color);
+      width: 50%;
+      height: 22px;
+    }
+
+    .tree li::after {
+      right: auto;
+      left: 50%;
+      border-left: 2px solid var(--line-color);
+    }
+
+    .tree li:only-child::after, .tree li:only-child::before { display: none; }
+    .tree li:only-child { padding-top: 0; }
+    .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+    .tree li:last-child::before {
+      border-right: 2px solid var(--line-color);
+      border-radius: 0 6px 0 0;
+    }
+    .tree li:first-child::after { border-radius: 6px 0 0 0; }
+
+    .tree ul ul::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 2px solid var(--line-color);
+      width: 0;
+      height: 22px;
+    }
+
+    .spouse-branch-badge {
+      display: inline-block;
+      background: var(--accent-light);
+      border: 2px solid #f59e0b;
+      color: #92400e;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.12);
+    }
+
+    /* Kotak Referensi Lintas Jalur */
+    .kin-cross-ref-box {
+      background: var(--kin-bg);
+      border: 2px dashed var(--kin-border);
+      color: var(--kin-text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      width: 220px;
+      display: inline-block;
+      font-size: 0.75rem;
+      text-align: left;
+      box-shadow: var(--shadow);
+    }
+
+    .kin-cross-ref-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--kin-text);
+    }
+
+    .kin-child-pill {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid #c4b5fd;
+      color: var(--kin-text);
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.73rem;
+      margin: 3px 3px 0 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .kin-child-pill:hover {
+      background: var(--kin-border);
+      color: #fff;
+    }
+
+    /* Kartu Anggota di Bagan */
+    .member-card {
+      background: var(--surface);
+      border: 2px solid #e2e8f0;
+      border-top-width: 5px;
+      border-radius: var(--radius);
+      padding: 12px 13px;
+      width: 235px;
+      display: inline-block;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      text-align: left;
+      position: relative;
+    }
+
+    .member-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px -4px rgba(15, 23, 42, 0.15);
+    }
+
+    .member-card.male { border-top-color: var(--male-border); }
+    .member-card.female { border-top-color: var(--female-border); }
+
+    /* Efek Spotlight & Highlight Pencarian pada Bagan */
+    #tree-canvas.searching-active .member-card:not(.highlight) {
+      opacity: 0.38;
+      filter: grayscale(35%);
+    }
+
+    #tree-canvas.searching-active .member-card:not(.highlight):hover {
+      opacity: 0.85;
+      filter: none;
+    }
+
+    .member-card.highlight {
+      outline: 3px solid #f59e0b;
+      background: #fffbeb;
+      box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.25), 0 12px 24px -4px rgba(15, 23, 42, 0.2);
+      z-index: 5;
+    }
+
+    @keyframes pulseFocus {
+      0% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.7), 0 12px 24px -4px rgba(15, 23, 42, 0.25); }
+      70% { box-shadow: 0 0 0 14px rgba(217, 119, 6, 0), 0 12px 24px -4px rgba(15, 23, 42, 0.25); }
+      100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0), 0 12px 24px -4px rgba(15, 23, 42, 0.25); }
+    }
+
+    .member-card.active-focus {
+      outline: 4px solid #d97706;
+      background: #fef3c7;
+      transform: scale(1.05);
+      z-index: 10;
+      animation: pulseFocus 1.6s infinite;
+    }
+
+    .card-quick-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    .quick-btn {
+      flex: 1;
+      padding: 5px 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .quick-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #475569;
+      flex-shrink: 0;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .male .avatar { background: var(--male-bg); color: var(--male-border); }
+    .female .avatar { background: var(--female-bg); color: var(--female-border); }
+
+    .card-title-area { overflow: hidden; flex: 1; }
+
+    .gen-badge {
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 6px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .mother-tag {
+      font-size: 0.7rem;
+      color: #92400e;
+      background: #fef3c7;
+      padding: 2px 7px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    .kin-parent-tag {
+      font-size: 0.7rem;
+      color: var(--kin-text);
+      background: var(--kin-bg);
+      border: 1px solid #ddd6fe;
+      padding: 2px 7px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    .member-nickname {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .member-fullname {
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .spouse-list-box {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    .spouse-item {
+      font-size: 0.73rem;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 4px 7px;
+      border-radius: 6px;
+      color: #334155;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spouse-item.kin-spouse {
+      background: var(--kin-bg);
+      border: 1px solid #c4b5fd;
+      color: var(--kin-text);
+      font-weight: 600;
+    }
+
+    .spouse-item.kin-spouse:hover {
+      background: #ede9fe;
+      text-decoration: underline;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding-top: 4px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Mode Direktori Kartu */
+    #directory-viewport {
+      display: none;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    #directory-viewport .member-card { width: 100%; }
+
+    /* Modal Umum */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: 18px;
+      max-width: 580px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.25);
+      position: relative;
+      max-height: 90vh;
+      max-height: 90dvh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #f1f5f9;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      padding-right: 28px;
+    }
+
+    .modal-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-light);
+      color: var(--primary);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 3px solid #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 8px;
+      gap: 12px;
+    }
+
+    .info-label { color: var(--text-muted); font-weight: 500; flex-shrink: 0; }
+    .info-val { font-weight: 600; text-align: right; word-break: break-word; }
+
+    .rel-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .rel-chip {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.79rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .rel-chip:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .rel-chip.kin-chip {
+      background: var(--kin-bg);
+      border-color: #c4b5fd;
+      color: var(--kin-text);
+    }
+
+    .rel-chip.kin-chip:hover {
+      background: var(--kin-border);
+      color: #fff;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: #16a34a;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .modal-actions-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: 0.81rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .form-group input, .form-group select {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    /* Kotak Upload & Link Foto */
+    .photo-upload-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #f8fafc;
+      border: 1px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 2px;
+    }
+
+    .photo-preview-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .photo-preview-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-controls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .photo-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .upload-label-btn {
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+
+    .upload-label-btn:hover { background: var(--primary-hover); }
+
+    .spouse-manager-card {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .spouse-manager-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .spouse-manager-row input, .spouse-manager-row select {
+      flex: 1;
+      padding: 9px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      width: 100%;
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* =====================================================
+       RESPONSIVE BREAKPOINTS (TABLET & SMARTPHONE)
+       ===================================================== */
+    @media (max-width: 900px) {
+      .toolbar { padding: 10px 14px; }
+      .admin-ActionBar { flex-direction: column; align-items: stretch; }
+      .admin-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+      .desktop-zoom-controls { display: none !important; }
+    }
+
+    @media (max-width: 640px) {
+      .welcome-minimal-box {
+        padding: 12px 4px;
+      }
+
+      .welcome-photo-clean {
+        margin-bottom: 14px;
+      }
+
+      .welcome-title {
+        margin-bottom: 24px;
+      }
+
+      .btn-open-silsilah {
+        max-width: 290px;
+        padding: 15px 24px;
+      }
+
+      .account-bar {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+      .account-status > span:first-child { display: none; }
+
+      header { padding: 14px 12px; }
+      header p { margin-bottom: 10px; }
+
+      .stats-bar {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+      .stats-bar::-webkit-scrollbar { display: none; }
+      .stat-pill { font-size: 0.75rem; padding: 4px 10px; }
+
+      .toolbar {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .mobile-filter-toggle {
+        display: inline-flex;
+        padding: 8px 11px;
+      }
+
+      .collapsible-filters {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 4px;
+      }
+
+      .collapsible-filters.mobile-open { display: flex; }
+
+      .admin-ActionBar {
+        display: none;
+        padding: 10px;
+      }
+
+      .admin-ActionBar.mobile-open { display: flex; }
+
+      .admin-buttons { grid-template-columns: 1fr 1fr; }
+
+      .toolbar-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .filters-group, .search-wrapper {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .search-input { font-size: 16px; }
+      .select-filter { width: 100%; font-size: 15px; }
+
+      .view-controls {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .member-card {
+        width: 205px;
+        padding: 10px 11px;
+      }
+
+      #directory-viewport {
+        grid-template-columns: 1fr;
+        padding: 14px 12px 80px;
+      }
+
+      .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .modal-card {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px 24px;
+        max-height: 92dvh;
+      }
+
+      .info-row {
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .info-val { text-align: left; }
+      .rel-chips { justify-content: flex-start !important; }
+
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group input, .form-group select { font-size: 16px; }
+      .photo-upload-box { flex-direction: column; text-align: center; }
+      .photo-btn-row { justify-content: center; }
+
+      .form-footer { flex-direction: column-reverse; }
+      .form-footer .btn { width: 100%; padding: 11px; }
+
+      .floating-dock {
+        bottom: 14px;
+        right: 12px;
+      }
+    }
+  </style>
+</head>
+<body class="role-umum">
+
+  <!-- =====================================================
+       HOMEPAGE / WELCOME SCREEN MINIMALIS
+       (Foto Tanpa Bingkai & Transparan, Judul, Button Besar Buka Silsilah, & Link Kecil Admin)
+       ===================================================== -->
+  <section id="welcome-screen">
+    <div class="welcome-minimal-box">
+      <!-- 1. Foto Simbah K.H. Abdul Ghofur Tanpa Bingkai & Background Transparan -->
+      <div class="welcome-photo-clean">
+        <img
+          id="welcome-founder-img"
+          src="foto mbah ghofur.jpg"
+          alt="Simbah K.H. Abdul Ghofur"
+          onload="removeBlackBackground(this)"
+          onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:4rem;\'>👳‍♂️</span>';"
+        />
+      </div>
+
+      <!-- 2. Judul / Nama Website -->
+      <h1 class="welcome-title">
+        Silsilah Keluarga Besar
+        <span>K.H. Abdul Ghofur (Bani Ghofur)</span>
+      </h1>
+
+      <!-- 3. Tombol Besar & Dominan: Buka Silsilah (Langsung Masuk Akun Umum) -->
+      <button type="button" class="btn-open-silsilah" onclick="enterAsUmum()">
+        🌳 Buka Silsilah
+      </button>
+
+      <!-- 4. Link Sangat Kecil: Admin (Meminta Password Terlebih Dahulu) -->
+      <button type="button" class="link-admin-small" onclick="openAdminPasswordPrompt()">
+        Admin
+      </button>
+    </div>
+  </section>
+
+  <!-- Bar Status Akun (Admin vs Umum) + Tombol Beranda -->
+  <div class="account-bar">
+    <div class="account-status">
+      <button type="button" class="account-btn" onclick="showWelcomeScreen()" title="Kembali ke Halaman Depan">
+        🏠 Beranda
+      </button>
+      <span>Status Akses:</span>
+      <span id="role-badge" class="role-badge umum">👤 Akun Umum</span>
+    </div>
+    <div style="display: flex; gap: 6px;">
+      <button id="btn-login-modal" class="account-btn" onclick="openLoginModal()">🔐 Mode Akun</button>
+      <button id="btn-logout-admin" class="account-btn admin-only" onclick="switchRole('umum')">🚪 Keluar Admin</button>
+    </div>
+  </div>
+
+  <header>
+    <h1 id="family-title">Silsilah Keluarga Besar K.H. Abdul Ghofur (Bani Ghofur)</h1>
+    <p>Ikatan Keluarga, Pernikahan Lintas Jalur & Catatan Sejarah Lintas Generasi</p>
+    <div class="stats-bar" id="stats-bar"></div>
+  </header>
+
+  <div class="toolbar">
+    <!-- Baris Khusus Menu Admin -->
+    <div class="admin-ActionBar admin-only" id="admin-action-bar">
+      <div class="admin-label">🛠️ Panel Kelola Admin:</div>
+      <div class="admin-buttons">
+        <button class="btn btn-primary" onclick="openFormModal('add')">➕ Tambah</button>
+        <button class="btn btn-accent" onclick="openQuickSelectModal('edit')">✏️ Edit Data</button>
+        <button class="btn btn-accent" onclick="openQuickSelectModal('spouse')">💍 Pasangan/Kerabat</button>
+        <button class="btn" onclick="exportToCSV()">📥 Unduh CSV</button>
+        <button class="btn" onclick="openImportCSVModal()">📤 Impor CSV</button>
+        <button class="btn btn-danger" onclick="resetToDefault()">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- Baris Filter & Navigasi Umum -->
+    <div class="toolbar-row">
+      <div class="filters-group">
+        <div class="search-wrapper">
+          <input type="text" id="search-input" class="search-input" placeholder="Cari nama, pasangan, atau kota..." />
+          <div id="search-nav-box" class="search-nav-box">
+            <span id="search-counter">0/0</span>
+            <button type="button" class="search-nav-btn" onclick="navigateSearchResult(-1)" title="Hasil Sebelumnya">◀</button>
+            <button type="button" class="search-nav-btn" onclick="navigateSearchResult(1)" title="Hasil Berikutnya">▶</button>
+          </div>
+          <button type="button" class="btn mobile-filter-toggle" id="btn-mobile-filter" onclick="toggleMobileFilters()" title="Buka Filter & Menu">
+            ⚙️ Filter
+          </button>
+        </div>
+
+        <div class="collapsible-filters" id="collapsible-filters">
+          <select id="branch-filter" class="select-filter">
+            <option value="ALL">Semua Jalur Keturunan</option>
+          </select>
+          <select id="gen-filter" class="select-filter">
+            <option value="ALL">Semua Generasi</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="view-controls">
+        <button class="btn active" id="btn-tree-view" onclick="switchView('tree')">🌳 Bagan Pohon</button>
+        <button class="btn" id="btn-dir-view" onclick="switchView('dir')">📇 Direktori Kartu</button>
+        <div class="desktop-zoom-controls" style="display: flex; gap: 5px;">
+          <button class="btn" onclick="adjustZoom(-0.12)" title="Perkecil">➖</button>
+          <button class="btn" id="btn-zoom-reset" onclick="resetZoom()" title="Reset Skala">100%</button>
+          <button class="btn" onclick="adjustZoom(0.12)" title="Perbesar">➕</button>
+          <button class="btn" onclick="centerRootTree()" title="Ke Puncak Silsilah">🎯</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tampilan Bagan Pohon -->
+  <div id="tree-viewport">
+    <div id="tree-scale-wrapper">
+      <div id="tree-canvas" class="tree"></div>
+    </div>
+  </div>
+
+  <!-- Floating Zoom & Center Dock -->
+  <div class="floating-dock" id="floating-dock">
+    <button class="dock-btn" onclick="adjustZoom(-0.12)" title="Perkecil Bagan">➖</button>
+    <span class="dock-zoom-label" id="dock-zoom-label" onclick="resetZoom()" title="Ketuk untuk Reset 100%">100%</span>
+    <button class="dock-btn" onclick="adjustZoom(0.12)" title="Perbesar Bagan">➕</button>
+    <button class="dock-btn" onclick="centerRootTree()" title="Pusatkan ke Puncak Silsilah">🎯</button>
+  </div>
+
+  <!-- Tampilan Direktori Kartu -->
+  <div id="directory-viewport"></div>
+
+  <!-- 1. Modal Pop-up Biodata -->
+  <div class="modal-overlay" id="member-modal" onclick="closeMemberModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeMemberModal()">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- 2. Modal Pilih Anggota untuk Edit / Tambah Pasangan -->
+  <div class="modal-overlay" id="select-member-modal" onclick="closeQuickSelectModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeQuickSelectModal()">✕</button>
+      <h2 id="select-modal-title" style="font-size: 1.18rem; color: var(--primary); margin-bottom: 6px; padding-right: 28px;">Pilih Anggota Keluarga</h2>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">Pilih nama anggota keluarga dari daftar di bawah ini:</p>
+      <div class="form-group full">
+        <select id="quick-member-select" style="padding: 11px; font-size: 0.95rem;"></select>
+      </div>
+      <div class="form-footer">
+        <button type="button" class="btn" onclick="closeQuickSelectModal()">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="confirmQuickSelect()">Lanjutkan ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Modal Kelola Pasangan -->
+  <div class="modal-overlay" id="spouse-modal" onclick="closeSpouseModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeSpouseModal()">✕</button>
+      <h2 id="spouse-modal-title" style="font-size: 1.15rem; color: var(--accent); padding-right: 28px;">💍 Kelola Daftar Pasangan</h2>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin: 4px 0 14px;">
+        Jika pasangan merupakan <strong>sesama cucu/cicit Mbah Abdul Ghofur</strong>, pilih namanya pada kolom <em>"Tautkan Kerabat"</em> agar otomatis tersambung dua arah.
+      </p>
+      <input type="hidden" id="spouse-target-id" />
+      <div id="spouse-inputs-container"></div>
+      <button type="button" class="btn" style="width: 100%; justify-content: center; margin-top: 6px; border-style: dashed;" onclick="addSpouseInputRow('', '')">
+        ➕ Tambah Istri / Suami Baru
+      </button>
+      <div class="form-footer">
+        <button type="button" class="btn" onclick="closeSpouseModal()">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="saveSpouses()">💾 Simpan & Sinkronkan Pasangan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Modal Formulir Tambah / Edit Data Anggota -->
+  <div class="modal-overlay" id="form-modal" onclick="closeFormModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeFormModal()">✕</button>
+      <h2 id="form-modal-title" style="font-size: 1.2rem; color: var(--primary); padding-right: 28px;">Tambah Anggota Keluarga</h2>
+
+      <form id="member-form" onsubmit="saveMemberForm(event)">
+        <input type="hidden" id="form-mode" value="add" />
+
+        <div class="form-grid">
+          <div class="form-group full" id="edit-selector-box" style="display: none; background: #fffbeb; padding: 10px; border-radius: 10px; border: 1px solid #fde68a;">
+            <label for="f-switch-edit">🔄 Ganti Anggota yang Diedit:</label>
+            <select id="f-switch-edit" onchange="openFormModal('edit', this.value)"></select>
+          </div>
+
+          <div class="form-group full">
+            <label for="f-id_ortu">Orang Tua Utama (Jalur Garis Silsilah) *</label>
+            <select id="f-id_ortu" onchange="handleParentChange()">
+              <option value="">-- Puncak Silsilah (Mbah Buyut) --</option>
+            </select>
+          </div>
+
+          <div class="form-group full" id="mother-select-group">
+            <label for="f-dari_pasangan">Lahir dari Pasangan (Ibu/Ayah Kandung)</label>
+            <select id="f-dari_pasangan" onchange="handleMotherSelectChange()">
+              <option value="">-- Pilih / Otomatis --</option>
+            </select>
+            <input type="hidden" id="f-id_ortu_kerabat" value="" />
+            <span id="kin-parent-info" style="font-size: 0.75rem; color: var(--kin-text); font-weight: 600; display: none;"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-nama_lengkap">Nama Lengkap *</label>
+            <input type="text" id="f-nama_lengkap" required placeholder="Contoh: Muhammad Farhan" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-nama_panggilan">Nama Panggilan *</label>
+            <input type="text" id="f-nama_panggilan" required placeholder="Contoh: Gus Farhan" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-jenis_kelamin">Jenis Kelamin *</label>
+            <select id="f-jenis_kelamin" required>
+              <option value="L">Laki-laki (L)</option>
+              <option value="P">Perempuan (P)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="f-anak_ke">Urutan Anak Ke- *</label>
+            <input type="number" id="f-anak_ke" min="1" required value="1" />
+          </div>
+
+          <div class="form-group full" style="background: #f5f3ff; border: 1px solid #ddd6fe; padding: 10px 12px; border-radius: 10px;">
+            <label for="f-pasangan_kerabat_single" style="color: var(--kin-text);">
+              💞 Menikah dengan Sesama Keturunan Mbah Abdul Ghofur? (Opsional)
+            </label>
+            <select id="f-pasangan_kerabat_single" onchange="handleSingleKinSpouseSelect()">
+              <option value="">-- Bukan Kerabat / Pasangan dari Luar Silsilah --</option>
+            </select>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">
+              *Jika memiliki lebih dari 1 pasangan, gunakan menu <strong>💍 Pasangan</strong> setelah menyimpan.
+            </span>
+          </div>
+
+          <div class="form-group full">
+            <label for="f-nama_pasangan">
+              Nama Istri / Suami
+              <span style="font-weight: normal; color: var(--text-muted);">(Pisahkan dengan titik koma <b>;</b> jika lebih dari 1)</span>
+            </label>
+            <input type="text" id="f-nama_pasangan" placeholder="Contoh: Siti Aminah; Dewi Sartika" />
+            <input type="hidden" id="f-id_pasangan_kerabat" value="" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-status">Status Kehidupan</label>
+            <select id="f-status">
+              <option value="Hidup">Hidup</option>
+              <option value="Wafat">Wafat (Alm./Almh.)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="f-domisili">Kota Domisili</label>
+            <input type="text" id="f-domisili" placeholder="Contoh: Semarang" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-tahun_lahir">Tahun Lahir</label>
+            <input type="text" id="f-tahun_lahir" placeholder="Contoh: 1980" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-tahun_wafat">Tahun Wafat</label>
+            <input type="text" id="f-tahun_wafat" placeholder="Kosongkan jika hidup" />
+          </div>
+
+          <div class="form-group full">
+            <label for="f-no_wa">Nomor WhatsApp</label>
+            <input type="text" id="f-no_wa" placeholder="Contoh: 628123456789" />
+          </div>
+
+          <div class="form-group full">
+            <label>Foto Profil (Upload dari HP/Komputer atau Tempel Link Foto)</label>
+            <div class="photo-upload-box">
+              <div class="photo-preview-circle" id="f-photo-preview">
+                <span>Foto</span>
+              </div>
+              <div class="photo-controls">
+                <div class="photo-btn-row">
+                  <label for="f-file_foto" class="upload-label-btn">
+                    📤 Upload Foto dari Perangkat
+                  </label>
+                  <input type="file" id="f-file_foto" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)" />
+                  <button type="button" class="btn btn-danger" style="padding: 6px 10px; font-size: 0.78rem;" onclick="clearPhotoField()">
+                    🗑️ Hapus Foto
+                  </button>
+                </div>
+                <input type="text" id="f-url_foto" placeholder="Atau tempel Link URL Foto (https://...)" oninput="updatePhotoPreviewFromInput()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="f-catatan">Catatan Tambahan</label>
+            <input type="text" id="f-catatan" placeholder="Contoh: Pernikahan sepupu (Jalur Pakde Ahmad & Bude Yuni)" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-id">Kode ID</label>
+            <input type="text" id="f-id" required readonly style="background: #e2e8f0;" />
+          </div>
+
+          <div class="form-group">
+            <label for="f-generasi">Generasi Ke-</label>
+            <input type="number" id="f-generasi" required readonly style="background: #e2e8f0;" />
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="button" class="btn" onclick="closeFormModal()">Batal</button>
+          <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Modal Impor CSV -->
+  <div class="modal-overlay" id="import-csv-modal" onclick="closeImportCSVModal()">
+    <div class="modal-card" style="max-width: 480px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeImportCSVModal()">✕</button>
+      <h2 style="font-size: 1.2rem; color: var(--primary); margin-bottom: 6px; padding-right: 28px;">📤 Impor Data Silsilah dari CSV</h2>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+        Pilih file <strong>.csv</strong> hasil unduhan cadangan atau tabel Spreadsheet untuk dimasukkan ke dalam silsilah.
+      </p>
+
+      <div class="form-group full" style="margin-bottom: 14px;">
+        <label for="csv-file-input">Pilih File CSV (*.csv)</label>
+        <input type="file" id="csv-file-input" accept=".csv,text/csv" style="padding: 10px; background: #f8fafc; border: 1px dashed #94a3b8; cursor: pointer;" />
+      </div>
+
+      <div class="form-group full" style="margin-bottom: 12px;">
+        <label for="csv-import-mode">Mode Pemulihan Data:</label>
+        <select id="csv-import-mode">
+          <option value="replace">🔄 Ganti Semua Data Saat Ini (Restore Penuh)</option>
+          <option value="merge">➕ Gabungkan & Perbarui Berdasarkan Kode ID (Merge)</option>
+        </select>
+      </div>
+
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 12px; font-size: 0.78rem; color: #166534;">
+        💡 <strong>Tips:</strong> Mendukung file CSV berpemisah koma (<code>,</code>) maupun titik koma (<code>;</code>) dari Microsoft Excel. Relasi pernikahan kerabat akan otomatis disinkronkan setelah diimpor.
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn" onclick="closeImportCSVModal()">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="processCSVImport()">📥 Proses Impor CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Modal Login / Ganti Akun (Password: girikesumo) -->
+  <div class="modal-overlay" id="login-modal" onclick="closeLoginModal()">
+    <div class="modal-card" style="max-width: 400px;" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeLoginModal()">✕</button>
+      <h2 style="font-size: 1.2rem; color: var(--primary); margin-bottom: 6px; padding-right: 28px;">🔐 Akses Admin</h2>
+      <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+        Masukkan kata sandi Admin untuk membuka fitur tambah, edit data, dan kelola silsilah keluarga.
+      </p>
+
+      <form onsubmit="handleAdminLogin(event)" style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 14px; margin-bottom: 12px;">
+        <div class="form-group" style="margin-bottom: 10px; display: none;">
+          <label>Username Admin</label>
+          <input type="text" id="login-user" value="admin" />
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="login-pass">Password Admin</label>
+          <input type="password" id="login-pass" required placeholder="Masukkan password admin..." />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">🔓 Masuk sebagai Admin</button>
+      </form>
+
+      <div id="switch-umum-box" style="text-align: center;">
+        <button type="button" class="btn" style="width: 100%; justify-content: center; font-size: 0.8rem;" onclick="enterAsUmum()">
+          👤 Masuk sebagai Akun Umum (Hanya Lihat)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_CREDENTIALS = {
+      username: "admin",
+      password: "girikesumo"
+    };
+
+    const STORAGE_KEY = "silsilah_bani_ghofur_v4";
+    const ROLE_STORAGE_KEY = "silsilah_active_role";
+    const DEFAULT_FOUNDER_PHOTO = "foto mbah ghofur.jpg";
+
+    const DEFAULT_FAMILY_DATA = [
+      {
+        id: "G1-01", id_ortu: "", id_ortu_kerabat: "", generasi: 1, anak_ke: 1,
+        nama_lengkap: "K.H. Abdul Ghofur", nama_panggilan: "Mbah Buyut Ghofur",
+        jenis_kelamin: "L", nama_pasangan: "Nyai Hj. Fatimah; Nyai Hj. Halimah",
+        id_pasangan_kerabat: ";", dari_pasangan: "", status: "Wafat",
+        tahun_lahir: "1920", tahun_wafat: "1995", domisili: "Demak",
+        no_wa: "", url_foto: "foto mbah ghofur.jpg", catatan: "Pendiri Keluarga Besar Bani Ghofur (Memiliki 2 Istri)"
+      },
+      {
+        id: "G2-01", id_ortu: "G1-01", id_ortu_kerabat: "", generasi: 2, anak_ke: 1,
+        nama_lengkap: "K.H. Ahmad Sulaiman", nama_panggilan: "Pakde Ahmad",
+        jenis_kelamin: "L", nama_pasangan: "Hj. Siti Aminah; Hj. Rahmawati",
+        id_pasangan_kerabat: ";", dari_pasangan: "Nyai Hj. Fatimah", status: "Wafat",
+        tahun_lahir: "1948", tahun_wafat: "2018", domisili: "Semarang",
+        no_wa: "", url_foto: "", catatan: "Anak ke-1 dari Istri Pertama (Nyai Hj. Fatimah)"
+      },
+      {
+        id: "G2-02", id_ortu: "G1-01", id_ortu_kerabat: "", generasi: 2, anak_ke: 2,
+        nama_lengkap: "Hj. Sri Wahyuni", nama_panggilan: "Bude Yuni",
+        jenis_kelamin: "P", nama_pasangan: "H. Bambang Sutrisno",
+        id_pasangan_kerabat: "", dari_pasangan: "Nyai Hj. Fatimah", status: "Hidup",
+        tahun_lahir: "1953", tahun_wafat: "", domisili: "Solo",
+        no_wa: "628123456780", url_foto: "", catatan: "Anak ke-2 dari Istri Pertama (Nyai Hj. Fatimah)"
+      },
+      {
+        id: "G2-03", id_ortu: "G1-01", id_ortu_kerabat: "", generasi: 2, anak_ke: 3,
+        nama_lengkap: "H. Ridwan Kamiludin", nama_panggilan: "Paklik Ridwan",
+        jenis_kelamin: "L", nama_pasangan: "Hj. Nurul Hidayah",
+        id_pasangan_kerabat: "", dari_pasangan: "Nyai Hj. Halimah", status: "Hidup",
+        tahun_lahir: "1960", tahun_wafat: "", domisili: "Yogyakarta",
+        no_wa: "628123456789", url_foto: "", catatan: "Anak dari Istri Kedua (Nyai Hj. Halimah)"
+      },
+      {
+        id: "G3-01", id_ortu: "G2-01", id_ortu_kerabat: "", generasi: 3, anak_ke: 1,
+        nama_lengkap: "Budi Santoso", nama_panggilan: "Mas Budi",
+        jenis_kelamin: "L", nama_pasangan: "Rina Wati",
+        id_pasangan_kerabat: "", dari_pasangan: "Hj. Siti Aminah", status: "Hidup",
+        tahun_lahir: "1975", tahun_wafat: "", domisili: "Semarang",
+        no_wa: "628123456781", url_foto: "", catatan: "Cucu (Anak Pakde Ahmad dari Ibu Hj. Siti Aminah)"
+      },
+      {
+        id: "G3-02", id_ortu: "G2-01", id_ortu_kerabat: "", generasi: 3, anak_ke: 2,
+        nama_lengkap: "Dewi Lestari", nama_panggilan: "Mbak Dewi",
+        jenis_kelamin: "P", nama_pasangan: "Andi Pratama",
+        id_pasangan_kerabat: "G3-03", dari_pasangan: "Hj. Rahmawati", status: "Hidup",
+        tahun_lahir: "1986", tahun_wafat: "", domisili: "Semarang",
+        no_wa: "628123456782", url_foto: "", catatan: "Cucu (Menikah dengan sepupunya: Mas Andi Pratama anak Bude Yuni)"
+      },
+      {
+        id: "G3-03", id_ortu: "G2-02", id_ortu_kerabat: "", generasi: 3, anak_ke: 1,
+        nama_lengkap: "Andi Pratama", nama_panggilan: "Mas Andi",
+        jenis_kelamin: "L", nama_pasangan: "Dewi Lestari",
+        id_pasangan_kerabat: "G3-02", dari_pasangan: "H. Bambang Sutrisno", status: "Hidup",
+        tahun_lahir: "1985", tahun_wafat: "", domisili: "Semarang",
+        no_wa: "628123456783", url_foto: "", catatan: "Cucu (Menikah dengan sepupunya: Mbak Dewi Lestari anak Pakde Ahmad)"
+      },
+      {
+        id: "G3-04", id_ortu: "G2-03", id_ortu_kerabat: "", generasi: 3, anak_ke: 1,
+        nama_lengkap: "Nadia Safitri", nama_panggilan: "Mbak Nadia",
+        jenis_kelamin: "P", nama_pasangan: "Hendra Wijaya",
+        id_pasangan_kerabat: "", dari_pasangan: "Hj. Nurul Hidayah", status: "Hidup",
+        tahun_lahir: "1990", tahun_wafat: "", domisili: "Yogyakarta",
+        no_wa: "", url_foto: "", catatan: "Cucu (Anak ke-1 Paklik Ridwan)"
+      },
+      {
+        id: "G4-01", id_ortu: "G3-01", id_ortu_kerabat: "", generasi: 4, anak_ke: 1,
+        nama_lengkap: "Fajar Nugroho", nama_panggilan: "Dek Fajar",
+        jenis_kelamin: "L", nama_pasangan: "",
+        id_pasangan_kerabat: "", dari_pasangan: "Rina Wati", status: "Hidup",
+        tahun_lahir: "2005", tahun_wafat: "", domisili: "Semarang",
+        no_wa: "", url_foto: "", catatan: "Cicit (Anak ke-1 Mas Budi)"
+      },
+      {
+        id: "G4-02", id_ortu: "G3-03", id_ortu_kerabat: "G3-02", generasi: 4, anak_ke: 1,
+        nama_lengkap: "Muhammad Zaki Ghofur", nama_panggilan: "Dek Zaki",
+        jenis_kelamin: "L", nama_pasangan: "",
+        id_pasangan_kerabat: "", dari_pasangan: "Dewi Lestari", status: "Hidup",
+        tahun_lahir: "2012", tahun_wafat: "", domisili: "Semarang",
+        no_wa: "", url_foto: "", catatan: "Cicit dari pernikahan kerabat (Ayah: Mas Andi [Jalur Bude Yuni], Ibu: Mbak Dewi [Jalur Pakde Ahmad])"
+      }
+    ];
+
+    let familyData = [];
+    let currentRole = "umum";
+    let currentZoom = 1;
+    let currentView = "tree";
+    let quickSelectPurpose = "edit";
+
+    let matchedCardElements = [];
+    let currentMatchIndex = 0;
+    let searchScrollTimeout = null;
+    let isDraggingCanvas = false;
+
+    const GEN_LABELS = {
+      1: "Generasi 1 • Mbah Buyut",
+      2: "Generasi 2 • Anak",
+      3: "Generasi 3 • Cucu",
+      4: "Generasi 4 • Cicit",
+      5: "Generasi 5 • Canggah",
+      6: "Generasi 6 • Wareng"
+    };
+
+    /**
+     * PENGHAPUS BACKGROUND HITAM OTOMATIS (FLOOD-FILL DARI TEPI GAMBAR)
+     * Membuat foto JPG Simbah Ghofur yang berlatar belakang hitam pekat menjadi transparan murni
+     */
+    function removeBlackBackground(imgEl) {
+      if (!imgEl || imgEl.dataset.transparentProcessed === "true") return;
+      try {
+        const w = imgEl.naturalWidth;
+        const h = imgEl.naturalHeight;
+        if (!w || !h) return;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(imgEl, 0, 0);
+
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+        const visited = new Uint8Array(w * h);
+        const queue = [];
+
+        const pushIfDark = (x, y) => {
+          if (x < 0 || x >= w || y < 0 || y >= h) return;
+          const idx = y * w + x;
+          if (visited[idx]) return;
+          const p = idx * 4;
+          const r = data[p], g = data[p + 1], b = data[p + 2];
+          // Deteksi piksel latar hitam di sekeliling luar objek
+          if (r < 28 && g < 28 && b < 28) {
+            visited[idx] = 1;
+            queue.push(idx);
+          }
+        };
+
+        for (let x = 0; x < w; x++) {
+          pushIfDark(x, 0);
+          pushIfDark(x, h - 1);
+        }
+        for (let y = 0; y < h; y++) {
+          pushIfDark(0, y);
+          pushIfDark(w - 1, y);
+        }
+
+        while (queue.length > 0) {
+          const curr = queue.pop();
+          const cx = curr % w;
+          const cy = (curr / w) | 0;
+          data[curr * 4 + 3] = 0; // Jadikan transparan penuh
+
+          pushIfDark(cx + 1, cy);
+          pushIfDark(cx - 1, cy);
+          pushIfDark(cx, cy + 1);
+          pushIfDark(cx, cy - 1);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        imgEl.dataset.transparentProcessed = "true";
+        imgEl.src = canvas.toDataURL("image/png");
+      } catch (err) {
+        // Jika diblokir CORS lokal pada beberapa browser, gambar tetap tampil tanpa bingkai
+      }
+    }
+
+    /**
+     * AKSI TOMBOL HOMEPAGE (WELCOME SCREEN)
+     */
+    // Klik "Buka Silsilah" -> Masuk langsung sebagai Akun Umum
+    function enterAsUmum() {
+      switchRole("umum");
+      switchView("tree");
+      closeLoginModal();
+      document.getElementById("welcome-screen").classList.add("hidden");
+      setTimeout(centerRootTree, 100);
+    }
+
+    // Klik link kecil "Admin" -> Wajib memasukkan password terlebih dahulu
+    function openAdminPasswordPrompt() {
+      openLoginModal();
+    }
+
+    function showWelcomeScreen() {
+      syncWelcomeFounderPhoto();
+      document.getElementById("welcome-screen").classList.remove("hidden");
+    }
+
+    function syncWelcomeFounderPhoto() {
+      const founder = familyData.find(m => !m.id_ortu) || familyData[0];
+      const imgEl = document.getElementById("welcome-founder-img");
+      if (!imgEl) return;
+      const targetSrc = (founder && founder.url_foto) ? founder.url_foto : DEFAULT_FOUNDER_PHOTO;
+      if (imgEl.getAttribute("src") !== targetSrc && !imgEl.dataset.transparentProcessed) {
+        imgEl.src = targetSrc;
+      }
+    }
+
+    function toggleMobileFilters() {
+      const filtersEl = document.getElementById("collapsible-filters");
+      const adminBarEl = document.getElementById("admin-action-bar");
+      const btn = document.getElementById("btn-mobile-filter");
+
+      const isOpen = filtersEl.classList.toggle("mobile-open");
+      if (adminBarEl) adminBarEl.classList.toggle("mobile-open", isOpen);
+      btn.classList.toggle("active", isOpen);
+      btn.innerHTML = isOpen ? "✕ Tutup" : "⚙️ Filter";
+    }
+
+    /**
+     * HELPER RELASI PASANGAN & PERNIKAHAN KERABAT
+     */
+    function getSpouseObjects(member) {
+      if (!member || !member.nama_pasangan) return [];
+      const rawNames = member.nama_pasangan.split(";").map(s => s.trim());
+      const rawKinIds = (member.id_pasangan_kerabat || "").split(";").map(s => s.trim());
+
+      const result = [];
+      rawNames.forEach((name, idx) => {
+        if (!name) return;
+        const kinId = rawKinIds[idx] || "";
+        const kinMember = kinId ? familyData.find(m => m.id === kinId) : null;
+        result.push({
+          name: kinMember ? kinMember.nama_lengkap : name,
+          kinId: kinMember ? kinMember.id : "",
+          kinMember: kinMember || null
+        });
+      });
+      return result;
+    }
+
+    function getAllChildrenOfMember(memberId) {
+      return familyData
+        .filter(m => m.id_ortu === memberId || m.id_ortu_kerabat === memberId)
+        .sort((a, b) => a.anak_ke - b.anak_ke);
+    }
+
+    function syncBidirectionalSpouse(sourceMember) {
+      const spouseObjs = getSpouseObjects(sourceMember);
+      spouseObjs.forEach(sp => {
+        if (!sp.kinId) return;
+        const target = familyData.find(m => m.id === sp.kinId);
+        if (!target) return;
+
+        const targetSpouses = getSpouseObjects(target);
+        const alreadyLinked = targetSpouses.some(ts => ts.kinId === sourceMember.id);
+
+        if (!alreadyLinked) {
+          const nameIdx = targetSpouses.findIndex(
+            ts => ts.name.toLowerCase() === sourceMember.nama_lengkap.toLowerCase() ||
+                  ts.name.toLowerCase() === (sourceMember.nama_panggilan || "").toLowerCase()
+          );
+          if (nameIdx !== -1) {
+            targetSpouses[nameIdx].name = sourceMember.nama_lengkap;
+            targetSpouses[nameIdx].kinId = sourceMember.id;
+          } else {
+            targetSpouses.push({
+              name: sourceMember.nama_lengkap,
+              kinId: sourceMember.id
+            });
+          }
+          target.nama_pasangan = targetSpouses.map(t => t.name).join("; ");
+          target.id_pasangan_kerabat = targetSpouses.map(t => t.kinId || "").join("; ");
+        }
+      });
+
+      familyData.forEach(child => {
+        if (child.id_ortu === sourceMember.id && child.dari_pasangan) {
+          const matchedSpouse = spouseObjs.find(
+            s => s.name.toLowerCase() === child.dari_pasangan.toLowerCase()
+          );
+          child.id_ortu_kerabat = matchedSpouse && matchedSpouse.kinId ? matchedSpouse.kinId : "";
+        }
+      });
+    }
+
+    /**
+     * UPLOAD FOTO & KOMPRESI
+     */
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        alert("Mohon pilih file gambar (JPG, PNG, atau WEBP).");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const TARGET_SIZE = 220;
+          const canvas = document.createElement("canvas");
+          canvas.width = TARGET_SIZE;
+          canvas.height = TARGET_SIZE;
+          const ctx = canvas.getContext("2d");
+
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, TARGET_SIZE, TARGET_SIZE);
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.78);
+          document.getElementById("f-url_foto").value = compressedDataUrl;
+          renderPhotoPreview(compressedDataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updatePhotoPreviewFromInput() {
+      renderPhotoPreview(document.getElementById("f-url_foto").value.trim());
+    }
+
+    function clearPhotoField() {
+      document.getElementById("f-url_foto").value = "";
+      document.getElementById("f-file_foto").value = "";
+      renderPhotoPreview("");
+    }
+
+    function renderPhotoPreview(src) {
+      const previewEl = document.getElementById("f-photo-preview");
+      if (src) {
+        previewEl.innerHTML = `<img src="${src}" alt="Preview Foto" onerror="this.parentElement.innerHTML='<span>Link Error</span>'" />`;
+      } else {
+        previewEl.innerHTML = `<span>Foto</span>`;
+      }
+    }
+
+    function saveToLocalStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(familyData));
+      } catch (err) {
+        alert("Penyimpanan browser penuh. Gunakan foto yang lebih sedikit atau unduh ke CSV.");
+      }
+    }
+
+    function switchRole(role) {
+      currentRole = role;
+      localStorage.setItem(ROLE_STORAGE_KEY, role);
+      document.body.classList.toggle("role-admin", role === "admin");
+      document.body.classList.toggle("role-umum", role !== "admin");
+
+      const badge = document.getElementById("role-badge");
+      if (role === "admin") {
+        badge.className = "role-badge admin";
+        badge.textContent = "🛡️ Admin Aktif";
+      } else {
+        badge.className = "role-badge umum";
+        badge.textContent = "👤 Akun Umum";
+      }
+
+      closeLoginModal();
+      renderAll(false);
+    }
+
+    function openLoginModal() {
+      const passInput = document.getElementById("login-pass");
+      passInput.value = "";
+      document.getElementById("login-modal").classList.add("open");
+      setTimeout(() => passInput.focus(), 80);
+    }
+
+    function closeLoginModal() {
+      document.getElementById("login-modal").classList.remove("open");
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById("login-pass").value.trim();
+
+      if (pass === ADMIN_CREDENTIALS.password) {
+        switchRole("admin");
+        switchView("tree");
+        document.getElementById("welcome-screen").classList.add("hidden");
+        setTimeout(centerRootTree, 100);
+      } else {
+        alert("Password Admin salah!");
+      }
+    }
+
+    function getInitials(name) {
+      if (!name) return "?";
+      const parts = name.replace(/^(K\.H\.|Nyai|Hj\.|H\.|Gus|Ning)\s*/gi, "").trim().split(/\s+/);
+      return parts.slice(0, 2).map(p => p[0]).join("").toUpperCase();
+    }
+
+    function formatDeceasedPrefix(member) {
+      if ((member.status || "").toLowerCase() === "wafat") {
+        return member.jenis_kelamin === "P" ? "Almh. " : "Alm. ";
+      }
+      return "";
+    }
+
+    /**
+     * MEMBANGUN KARTU ANGGOTA
+     */
+    function createMemberCardHTML(member, highlighted = false) {
+      const genderClass = member.jenis_kelamin === "P" ? "female" : "male";
+      const highlightClass = highlighted ? "highlight" : "";
+      const spouseObjs = getSpouseObjects(member);
+      const initials = getInitials(member.nama_panggilan || member.nama_lengkap);
+
+      const avatarHTML = member.url_foto
+        ? `<img src="${member.url_foto}" class="avatar" alt="${member.nama_panggilan}" onerror="this.outerHTML='<div class=\\'avatar\\'>${initials}</div>'" />`
+        : `<div class="avatar">${initials}</div>`;
+
+      let spouseHTML = "";
+      if (spouseObjs.length > 0) {
+        const label = member.jenis_kelamin === "P" ? "Suami" : "Istri";
+        spouseHTML = `<div class="spouse-list-box">` +
+          spouseObjs.map((sp, idx) => {
+            const prefix = spouseObjs.length > 1 ? `${label} ${idx + 1}: ` : "";
+            if (sp.kinMember) {
+              return `<div class="spouse-item kin-spouse" onclick="event.stopPropagation(); handleCardClick('${sp.kinMember.id}')" title="Klik untuk lihat profil kerabat">
+                💞 ${prefix}${sp.kinMember.nama_panggilan || sp.name} (Kerabat • Gen ${sp.kinMember.generasi})
+              </div>`;
+            }
+            return `<div class="spouse-item">💍 ${prefix}<strong>${sp.name}</strong></div>`;
+          }).join("") +
+          `</div>`;
+      }
+
+      let parentTagHTML = "";
+      if (member.id_ortu_kerabat) {
+        const mainParent = familyData.find(m => m.id === member.id_ortu);
+        const kinParent = familyData.find(m => m.id === member.id_ortu_kerabat);
+        if (mainParent && kinParent) {
+          parentTagHTML = `<div class="kin-parent-tag">💞 Anak Kerabat: ${mainParent.nama_panggilan} & ${kinParent.nama_panggilan}</div>`;
+        }
+      } else if (member.dari_pasangan) {
+        parentTagHTML = `<div class="mother-tag">🌱 Jalur Pasangan: ${member.dari_pasangan}</div>`;
+      }
+
+      const years = member.tahun_lahir
+        ? `${member.tahun_lahir}${member.tahun_wafat ? " – " + member.tahun_wafat : ""}`
+        : (member.status === "Wafat" ? "Wafat" : "Hidup");
+
+      const adminQuickBtns = `
+        <div class="card-quick-actions admin-only" onclick="event.stopPropagation()">
+          <button class="quick-btn" onclick="openFormModal('edit', '${member.id}')" title="Edit Data & Foto">✏️ Edit</button>
+          <button class="quick-btn" onclick="openSpouseModal('${member.id}')" title="Kelola Pasangan / Nikah Kerabat">💍 Pasangan</button>
+          <button class="quick-btn" onclick="openFormModal('add', '${member.id}')" title="Tambah Anak">👶 +Anak</button>
+        </div>
+      `;
+
+      return `
+        <div class="member-card ${genderClass} ${highlightClass}" data-member-id="${member.id}" onclick="handleCardClick('${member.id}')">
+          <div class="card-top">
+            ${avatarHTML}
+            <div class="card-title-area">
+              <span class="gen-badge">Gen ${member.generasi} • Anak #${member.anak_ke}</span>
+              <div class="member-nickname">${member.nama_panggilan || member.nama_lengkap}</div>
+            </div>
+          </div>
+          <div class="member-fullname">${formatDeceasedPrefix(member)}${member.nama_lengkap}</div>
+          ${parentTagHTML}
+          ${spouseHTML}
+          <div class="card-footer">
+            <span>📍 ${member.domisili || "-"}</span>
+            <span>${years}</span>
+          </div>
+          ${adminQuickBtns}
+        </div>
+      `;
+    }
+
+    function handleCardClick(memberId) {
+      if (isDraggingCanvas) return;
+      openMemberModal(memberId);
+    }
+
+    function isMemberMatchingKeyword(member, searchKeyword) {
+      if (!searchKeyword) return false;
+      return (
+        member.nama_lengkap.toLowerCase().includes(searchKeyword) ||
+        member.nama_panggilan.toLowerCase().includes(searchKeyword) ||
+        (member.nama_pasangan || "").toLowerCase().includes(searchKeyword) ||
+        (member.domisili || "").toLowerCase().includes(searchKeyword)
+      );
+    }
+
+    /**
+     * REKURSIF POHON SILSILAH
+     */
+    function buildTreeHTML(parentNode, searchKeyword) {
+      const primaryChildren = familyData
+        .filter(m => m.id_ortu === parentNode.id)
+        .sort((a, b) => a.anak_ke - b.anak_ke);
+
+      const crossKinChildren = familyData
+        .filter(m => m.id_ortu_kerabat === parentNode.id && m.id_ortu !== parentNode.id)
+        .sort((a, b) => a.anak_ke - b.anak_ke);
+
+      const spouseObjs = getSpouseObjects(parentNode);
+      const isMatch = isMemberMatchingKeyword(parentNode, searchKeyword);
+
+      let html = `<li>${createMemberCardHTML(parentNode, isMatch)}`;
+
+      let crossRefLiHTML = "";
+      if (crossKinChildren.length > 0) {
+        const otherParent = familyData.find(m => m.id === crossKinChildren[0].id_ortu);
+        const otherParentName = otherParent ? (otherParent.nama_panggilan || otherParent.nama_lengkap) : "Kerabat";
+        crossRefLiHTML = `
+          <li>
+            <div class="kin-cross-ref-box">
+              <div class="kin-cross-ref-title">💞 Lintas Jalur (${otherParentName})</div>
+              <div style="margin-bottom: 5px; font-size: 0.71rem; opacity: 0.9;">
+                Memiliki ${crossKinChildren.length} anak (ditampilkan penuh di jalur <strong>${otherParentName}</strong>):
+              </div>
+              <div>
+                ${crossKinChildren.map(c => `
+                  <span class="kin-child-pill" onclick="focusAndScrollToMemberInTree('${c.id}')" title="Klik untuk lompat ke kartu ${c.nama_panggilan}">
+                    👶 ${c.nama_panggilan || c.nama_lengkap} ➔
+                  </span>
+                `).join("")}
+              </div>
+            </div>
+          </li>
+        `;
+      }
+
+      if (primaryChildren.length > 0 || crossRefLiHTML) {
+        if (spouseObjs.length > 1) {
+          const spouseGroups = [];
+          spouseObjs.forEach((sp, idx) => {
+            const kidsOfSpouse = primaryChildren.filter(c => (c.dari_pasangan || "").toLowerCase() === sp.name.toLowerCase());
+            const labelPrefix = parentNode.jenis_kelamin === "P" ? "Suami" : "Istri";
+            spouseGroups.push({
+              title: `${labelPrefix} ${idx + 1}: ${sp.name}${sp.kinMember ? " (Kerabat)" : ""}`,
+              kids: kidsOfSpouse
+            });
+          });
+
+          const unassignedKids = primaryChildren.filter(c =>
+            !spouseObjs.some(s => s.name.toLowerCase() === (c.dari_pasangan || "").toLowerCase())
+          );
+          if (unassignedKids.length > 0) {
+            spouseGroups.push({
+              title: `Keturunan Lainnya`,
+              kids: unassignedKids
+            });
+          }
+
+          html += `<ul>`;
+          spouseGroups.forEach(group => {
+            html += `<li>
+              <div class="spouse-branch-badge">💍 Keturunan dari ${group.title}</div>
+              ${group.kids.length > 0
+                ? `<ul>${group.kids.map(k => buildTreeHTML(k, searchKeyword)).join("")}</ul>`
+                : `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">(Belum ada data anak)</div>`
+              }
+            </li>`;
+          });
+          if (crossRefLiHTML) html += crossRefLiHTML;
+          html += `</ul>`;
+        } else {
+          html += `<ul>
+            ${primaryChildren.map(c => buildTreeHTML(c, searchKeyword)).join("")}
+            ${crossRefLiHTML}
+          </ul>`;
+        }
+      }
+
+      html += `</li>`;
+      return html;
+    }
+
+    /**
+     * FUNGSI AUTO-SCROLL & HIGHLIGHT PENCARIAN DI MODE BAGAN
+     */
+    function updateSearchHighlightAndScroll(autoScroll = true) {
+      const searchKeyword = document.getElementById("search-input").value.trim().toLowerCase();
+      const treeCanvas = document.getElementById("tree-canvas");
+      const navBox = document.getElementById("search-nav-box");
+      const counterEl = document.getElementById("search-counter");
+
+      treeCanvas.classList.toggle("searching-active", Boolean(searchKeyword));
+
+      if (!searchKeyword) {
+        matchedCardElements = [];
+        currentMatchIndex = 0;
+        navBox.classList.remove("show");
+        return;
+      }
+
+      matchedCardElements = [...treeCanvas.querySelectorAll(".member-card.highlight")];
+      navBox.classList.add("show");
+
+      if (matchedCardElements.length === 0) {
+        counterEl.textContent = "0 hasil";
+        return;
+      }
+
+      if (currentMatchIndex >= matchedCardElements.length) {
+        currentMatchIndex = 0;
+      }
+
+      focusMatchAtIndex(currentMatchIndex, autoScroll);
+    }
+
+    function scrollCardIntoViewportCenter(cardEl) {
+      if (!cardEl) return;
+      cardEl.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center"
+      });
+    }
+
+    function focusMatchAtIndex(index, shouldScroll = true) {
+      if (matchedCardElements.length === 0) return;
+      currentMatchIndex = (index + matchedCardElements.length) % matchedCardElements.length;
+
+      matchedCardElements.forEach((el, i) => {
+        el.classList.toggle("active-focus", i === currentMatchIndex);
+      });
+
+      document.getElementById("search-counter").textContent = `${currentMatchIndex + 1}/${matchedCardElements.length}`;
+
+      if (shouldScroll && currentView === "tree") {
+        const targetCard = matchedCardElements[currentMatchIndex];
+        clearTimeout(searchScrollTimeout);
+        searchScrollTimeout = setTimeout(() => {
+          scrollCardIntoViewportCenter(targetCard);
+        }, 80);
+      }
+    }
+
+    function navigateSearchResult(direction) {
+      if (matchedCardElements.length === 0) return;
+      focusMatchAtIndex(currentMatchIndex + direction, true);
+    }
+
+    function focusAndScrollToMemberInTree(memberId) {
+      const branchSelect = document.getElementById("branch-filter");
+      if (branchSelect.value !== "ALL") {
+        branchSelect.value = "ALL";
+        renderAll(false);
+      }
+      const card = document.querySelector(`#tree-canvas .member-card[data-member-id="${memberId}"]`);
+      if (card) {
+        document.querySelectorAll("#tree-canvas .member-card").forEach(c => c.classList.remove("active-focus"));
+        card.classList.add("active-focus");
+        scrollCardIntoViewportCenter(card);
+      }
+    }
+
+    function centerRootTree() {
+      const firstCard = document.querySelector("#tree-canvas .member-card");
+      if (firstCard) {
+        firstCard.scrollIntoView({ behavior: "smooth", block: "start", inline: "center" });
+      }
+    }
+
+    function renderAll(autoScrollOnSearch = false) {
+      const searchKeyword = document.getElementById("search-input").value.trim().toLowerCase();
+      const branchSelect = document.getElementById("branch-filter");
+      let branchId = branchSelect.value;
+      const genValue = document.getElementById("gen-filter").value;
+
+      if (searchKeyword && branchId !== "ALL") {
+        const subtreeSet = getPrimaryTreeIds(branchId);
+        const hasMatchInBranch = familyData.some(m => subtreeSet.has(m.id) && isMemberMatchingKeyword(m, searchKeyword));
+        const hasMatchGlobal = familyData.some(m => isMemberMatchingKeyword(m, searchKeyword));
+        if (!hasMatchInBranch && hasMatchGlobal) {
+          branchSelect.value = "ALL";
+          branchId = "ALL";
+        }
+      }
+
+      const treeCanvas = document.getElementById("tree-canvas");
+      let rootNode = familyData.find(m => !m.id_ortu) || familyData[0];
+      if (branchId !== "ALL") {
+        const selectedBranch = familyData.find(m => m.id === branchId);
+        if (selectedBranch) rootNode = selectedBranch;
+      }
+
+      if (rootNode) {
+        treeCanvas.innerHTML = `<ul>${buildTreeHTML(rootNode, searchKeyword)}</ul>`;
+      } else {
+        treeCanvas.innerHTML = `<p style="padding: 40px; color: var(--text-muted);">Belum ada data silsilah.</p>`;
+      }
+
+      applyZoomDimensions();
+
+      const dirViewport = document.getElementById("directory-viewport");
+      const allowedIds = branchId === "ALL" ? null : getSubtreeIds(branchId);
+
+      const filteredList = familyData
+        .filter(m => !allowedIds || allowedIds.has(m.id))
+        .filter(m => genValue === "ALL" || String(m.generasi) === genValue)
+        .filter(m => !searchKeyword || isMemberMatchingKeyword(m, searchKeyword))
+        .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke);
+
+      dirViewport.innerHTML = filteredList.map(m => createMemberCardHTML(m, Boolean(searchKeyword))).join("");
+
+      updateSearchHighlightAndScroll(autoScrollOnSearch);
+      syncWelcomeFounderPhoto();
+    }
+
+    function getPrimaryTreeIds(rootId) {
+      const set = new Set([rootId]);
+      let added = true;
+      while (added) {
+        added = false;
+        familyData.forEach(m => {
+          if (set.has(m.id_ortu) && !set.has(m.id)) {
+            set.add(m.id);
+            added = true;
+          }
+        });
+      }
+      return set;
+    }
+
+    function getSubtreeIds(rootId) {
+      const set = new Set([rootId]);
+      let added = true;
+      while (added) {
+        added = false;
+        familyData.forEach(m => {
+          if ((set.has(m.id_ortu) || set.has(m.id_ortu_kerabat)) && !set.has(m.id)) {
+            set.add(m.id);
+            added = true;
+          }
+        });
+      }
+      return set;
+    }
+
+    /**
+     * MODAL BIODATA ANGGOTA
+     */
+    function openMemberModal(id) {
+      const member = familyData.find(m => m.id === id);
+      if (!member) return;
+
+      const mainParent = familyData.find(m => m.id === member.id_ortu);
+      const kinParent = member.id_ortu_kerabat ? familyData.find(m => m.id === member.id_ortu_kerabat) : null;
+      const children = getAllChildrenOfMember(member.id);
+      const spouseObjs = getSpouseObjects(member);
+      const initials = getInitials(member.nama_panggilan || member.nama_lengkap);
+
+      const modalAvatarHTML = member.url_foto
+        ? `<img src="${member.url_foto}" class="modal-avatar" alt="${member.nama_panggilan}" onerror="this.outerHTML='<div class=\\'modal-avatar\\'>${initials}</div>'" />`
+        : `<div class="modal-avatar">${initials}</div>`;
+
+      let parentChipsHTML = `<span class="info-val">- (Pendiri / Mbah Buyut)</span>`;
+      if (mainParent) {
+        parentChipsHTML = `<div class="rel-chips" style="justify-content: flex-end;">
+          <span class="rel-chip" onclick="openMemberModal('${mainParent.id}')">⬆️ ${mainParent.nama_panggilan || mainParent.nama_lengkap} (Gen ${mainParent.generasi})</span>
+          ${kinParent ? `<span class="rel-chip kin-chip" onclick="openMemberModal('${kinParent.id}')">💞 ${kinParent.nama_panggilan || kinParent.nama_lengkap} (Gen ${kinParent.generasi})</span>` : ""}
+        </div>`;
+      }
+
+      const spouseDisplay = spouseObjs.length > 0
+        ? `<div class="rel-chips" style="justify-content: flex-end;">` +
+          spouseObjs.map((sp, i) => {
+            const numLabel = spouseObjs.length > 1 ? `#${i + 1} ` : "";
+            if (sp.kinMember) {
+              return `<span class="rel-chip kin-chip" onclick="openMemberModal('${sp.kinMember.id}')">💞 ${numLabel}${sp.kinMember.nama_panggilan || sp.name} (Kerabat • Gen ${sp.kinMember.generasi})</span>`;
+            }
+            return `<span class="rel-chip" style="cursor: default;">💍 ${numLabel}${sp.name}</span>`;
+          }).join("") + `</div>`
+        : `<span class="info-val">-</span>`;
+
+      const childrenChips = children.length > 0
+        ? `<div class="rel-chips">${children.map(c => `<span class="rel-chip" onclick="openMemberModal('${c.id}')">${c.anak_ke}. ${c.nama_panggilan || c.nama_lengkap} ${c.dari_pasangan ? `(${c.dari_pasangan})` : ""}</span>`).join("")}</div>`
+        : `<span class="info-val">Belum ada data anak tercatat</span>`;
+
+      const cleanWa = (member.no_wa || "").replace(/[^0-9]/g, "");
+      const waButton = cleanWa
+        ? `<a class="wa-btn" href="https://wa.me/${cleanWa}" target="_blank" rel="noopener">💬 Hubungi via WhatsApp</a>`
+        : "";
+
+      document.getElementById("modal-content").innerHTML = `
+        <div class="modal-header">
+          ${modalAvatarHTML}
+          <div>
+            <span class="gen-badge">${GEN_LABELS[member.generasi] || "Generasi " + member.generasi} • ID: ${member.id}</span>
+            <h2 style="font-size: 1.18rem; margin-top: 4px;">${formatDeceasedPrefix(member)}${member.nama_lengkap}</h2>
+            <p style="color: var(--text-muted); font-size: 0.86rem;">Panggilan: <strong>${member.nama_panggilan || "-"}</strong></p>
+          </div>
+        </div>
+        <div class="info-list">
+          <div class="info-row">
+            <span class="info-label">Urutan Kelahiran</span>
+            <span class="info-val">Anak ke-${member.anak_ke}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Orang Tua (Jalur Silsilah)</span>
+            ${parentChipsHTML}
+          </div>
+          <div class="info-row">
+            <span class="info-label">Lahir dari Ibu / Pasangan</span>
+            <span class="info-val">${member.dari_pasangan || "-"}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Pasangan (${spouseObjs.length})</span>
+            ${spouseDisplay}
+          </div>
+          <div class="info-row">
+            <span class="info-label">Status & Tahun</span>
+            <span class="info-val">${member.status} ${member.tahun_lahir ? "(" + member.tahun_lahir + (member.tahun_wafat ? " – " + member.tahun_wafat : "") + ")" : ""}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Domisili</span>
+            <span class="info-val">📍 ${member.domisili || "-"}</span>
+          </div>
+          <div class="info-row" style="flex-direction: column;">
+            <span class="info-label">Daftar Anak Kandung (${children.length})</span>
+            ${childrenChips}
+          </div>
+          <div class="info-row">
+            <span class="info-label">Catatan</span>
+            <span class="info-val">${member.catatan || "-"}</span>
+          </div>
+        </div>
+        ${waButton}
+        <div class="modal-actions-bar admin-only">
+          <button class="btn btn-accent" onclick="openFormModal('edit', '${member.id}')">✏️ Edit & Foto</button>
+          <button class="btn btn-accent" onclick="openSpouseModal('${member.id}')">💍 Pasangan</button>
+          <button class="btn btn-primary" onclick="openFormModal('add', '${member.id}')">👶 +Anak</button>
+          <button class="btn btn-danger" onclick="deleteMember('${member.id}')">🗑️ Hapus</button>
+        </div>
+      `;
+
+      document.getElementById("member-modal").classList.add("open");
+    }
+
+    function closeMemberModal() {
+      document.getElementById("member-modal").classList.remove("open");
+    }
+
+    /**
+     * MODAL PILIH CEPAT ANGGOTA
+     */
+    function openQuickSelectModal(purpose) {
+      quickSelectPurpose = purpose;
+      const titleEl = document.getElementById("select-modal-title");
+      titleEl.textContent = purpose === "spouse"
+        ? "💍 Pilih Anggota untuk Kelola Pasangan / Nikah Kerabat"
+        : "✏️ Pilih Anggota yang Ingin Diedit Datanya";
+
+      const select = document.getElementById("quick-member-select");
+      const sorted = [...familyData].sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke);
+      select.innerHTML = sorted.map(m =>
+        `<option value="${m.id}">[Gen ${m.generasi}] ${m.nama_panggilan || m.nama_lengkap} (${m.nama_lengkap})</option>`
+      ).join("");
+
+      document.getElementById("select-member-modal").classList.add("open");
+    }
+
+    function closeQuickSelectModal() {
+      document.getElementById("select-member-modal").classList.remove("open");
+    }
+
+    function confirmQuickSelect() {
+      const selectedId = document.getElementById("quick-member-select").value;
+      closeQuickSelectModal();
+      if (!selectedId) return;
+      if (quickSelectPurpose === "spouse") {
+        openSpouseModal(selectedId);
+      } else {
+        openFormModal("edit", selectedId);
+      }
+    }
+
+    /**
+     * MODAL KELOLA PASANGAN & PERNIKAHAN SESAMA KETURUNAN
+     */
+    function openSpouseModal(memberId) {
+      closeMemberModal();
+      const member = familyData.find(m => m.id === memberId);
+      if (!member) return;
+
+      document.getElementById("spouse-target-id").value = member.id;
+      document.getElementById("spouse-modal-title").textContent = `💍 Kelola Pasangan: ${member.nama_panggilan || member.nama_lengkap}`;
+
+      const container = document.getElementById("spouse-inputs-container");
+      container.innerHTML = "";
+
+      const spouseObjs = getSpouseObjects(member);
+      if (spouseObjs.length === 0) {
+        addSpouseInputRow("", "");
+      } else {
+        spouseObjs.forEach(sp => addSpouseInputRow(sp.name, sp.kinId));
+      }
+
+      document.getElementById("spouse-modal").classList.add("open");
+    }
+
+    function addSpouseInputRow(valName = "", valKinId = "") {
+      const targetId = document.getElementById("spouse-target-id").value;
+      const container = document.getElementById("spouse-inputs-container");
+      const idx = container.children.length + 1;
+
+      const candidates = [...familyData]
+        .filter(m => m.id !== targetId)
+        .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke);
+
+      const optionsHTML = `<option value="">-- Pasangan dari Luar Silsilah (Bukan Kerabat) --</option>` +
+        candidates.map(c =>
+          `<option value="${c.id}" data-fullname="${c.nama_lengkap}" ${c.id === valKinId ? "selected" : ""}>
+            💞 [Gen ${c.generasi}] ${c.nama_panggilan || c.nama_lengkap} (${c.nama_lengkap})
+          </option>`
+        ).join("");
+
+      const card = document.createElement("div");
+      card.className = "spouse-manager-card";
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary);">Pasangan Ke-${idx}</span>
+          <button type="button" class="btn btn-danger" style="padding: 3px 8px; font-size: 0.74rem; min-height: 28px;" onclick="this.closest('.spouse-manager-card').remove()">🗑️ Hapus</button>
+        </div>
+        <div class="spouse-manager-row">
+          <select class="spouse-kin-select" onchange="onSpouseKinSelectChange(this)">
+            ${optionsHTML}
+          </select>
+        </div>
+        <div class="spouse-manager-row">
+          <input type="text" class="spouse-input-field" value="${valName}" placeholder="Ketik nama lengkap pasangan ke-${idx}..." />
+        </div>
+      `;
+      container.appendChild(card);
+    }
+
+    function onSpouseKinSelectChange(selectEl) {
+      const card = selectEl.closest(".spouse-manager-card");
+      const nameInput = card.querySelector(".spouse-input-field");
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
+      if (selectEl.value) {
+        nameInput.value = selectedOpt.getAttribute("data-fullname") || "";
+      }
+    }
+
+    function closeSpouseModal() {
+      document.getElementById("spouse-modal").classList.remove("open");
+    }
+
+    function saveSpouses() {
+      const memberId = document.getElementById("spouse-target-id").value;
+      const member = familyData.find(m => m.id === memberId);
+      if (!member) return;
+
+      const cards = [...document.querySelectorAll("#spouse-inputs-container .spouse-manager-card")];
+      const names = [];
+      const kinIds = [];
+
+      cards.forEach(card => {
+        const nameVal = card.querySelector(".spouse-input-field").value.trim();
+        const kinVal = card.querySelector(".spouse-kin-select").value.trim();
+        if (nameVal) {
+          names.push(nameVal);
+          kinIds.push(kinVal);
+        }
+      });
+
+      member.nama_pasangan = names.join("; ");
+      member.id_pasangan_kerabat = kinIds.join("; ");
+
+      syncBidirectionalSpouse(member);
+
+      saveToLocalStorage();
+      setupFiltersAndStats();
+      renderAll(false);
+      closeSpouseModal();
+    }
+
+    /**
+     * FORM TAMBAH / EDIT ANGGOTA
+     */
+    function generateNextId(generasi) {
+      const prefix = `G${generasi}-`;
+      const existingNums = familyData
+        .filter(m => m.id.startsWith(prefix))
+        .map(m => parseInt(m.id.replace(prefix, ""), 10))
+        .filter(n => !isNaN(n));
+      const nextNum = existingNums.length > 0 ? Math.max(...existingNums) + 1 : 1;
+      return `${prefix}${String(nextNum).padStart(2, "0")}`;
+    }
+
+    function populateParentDropdown(excludeId = null) {
+      const select = document.getElementById("f-id_ortu");
+      const sorted = [...familyData]
+        .filter(m => m.id !== excludeId)
+        .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke);
+
+      select.innerHTML = `<option value="">-- Puncak Silsilah (Mbah Buyut / Gen 1) --</option>` +
+        sorted.map(m => `<option value="${m.id}">[Gen ${m.generasi}] ${m.nama_panggilan || m.nama_lengkap} ${m.nama_pasangan ? `(Pasangan: ${m.nama_pasangan})` : ""}</option>`).join("");
+    }
+
+    function populateSingleKinSpouseDropdown(excludeId = null, selectedKinId = "") {
+      const select = document.getElementById("f-pasangan_kerabat_single");
+      const sorted = [...familyData]
+        .filter(m => m.id !== excludeId)
+        .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke);
+
+      select.innerHTML = `<option value="">-- Bukan Kerabat / Pasangan dari Luar Silsilah --</option>` +
+        sorted.map(m => `<option value="${m.id}" data-fullname="${m.nama_lengkap}" ${m.id === selectedKinId ? "selected" : ""}>💞 [Gen ${m.generasi}] ${m.nama_panggilan || m.nama_lengkap} (${m.nama_lengkap})</option>`).join("");
+    }
+
+    function handleSingleKinSpouseSelect() {
+      const select = document.getElementById("f-pasangan_kerabat_single");
+      const selectedId = select.value;
+      if (selectedId) {
+        const opt = select.options[select.selectedIndex];
+        document.getElementById("f-nama_pasangan").value = opt.getAttribute("data-fullname") || "";
+        document.getElementById("f-id_pasangan_kerabat").value = selectedId;
+      } else {
+        document.getElementById("f-id_pasangan_kerabat").value = "";
+      }
+    }
+
+    function updateMotherDropdown(parentId, selectedMother = "") {
+      const motherSelect = document.getElementById("f-dari_pasangan");
+      const parent = familyData.find(m => m.id === parentId);
+      if (!parent) {
+        motherSelect.innerHTML = `<option value="" data-kin-id="">-- Tidak Ada (Puncak Silsilah) --</option>`;
+        handleMotherSelectChange();
+        return;
+      }
+
+      const spouseObjs = getSpouseObjects(parent);
+      if (spouseObjs.length === 0) {
+        motherSelect.innerHTML = `<option value="" data-kin-id="">-- Orang tua belum memiliki data pasangan --</option>`;
+      } else {
+        motherSelect.innerHTML = spouseObjs.map((sp, idx) =>
+          `<option value="${sp.name}" data-kin-id="${sp.kinId || ""}" ${sp.name === selectedMother ? "selected" : ""}>
+            Pasangan ${idx + 1}: ${sp.name} ${sp.kinMember ? `(Kerabat • Gen ${sp.kinMember.generasi})` : ""}
+          </option>`
+        ).join("");
+      }
+      handleMotherSelectChange();
+    }
+
+    function handleMotherSelectChange() {
+      const motherSelect = document.getElementById("f-dari_pasangan");
+      const infoSpan = document.getElementById("kin-parent-info");
+      const hiddenKinParent = document.getElementById("f-id_ortu_kerabat");
+
+      const selectedOpt = motherSelect.options[motherSelect.selectedIndex];
+      const kinParentId = selectedOpt ? (selectedOpt.getAttribute("data-kin-id") || "") : "";
+      hiddenKinParent.value = kinParentId;
+
+      if (kinParentId) {
+        const kinParent = familyData.find(m => m.id === kinParentId);
+        infoSpan.style.display = "block";
+        infoSpan.textContent = `💞 Otomatis ditautkan sebagai anak kandung dari kerabat: ${kinParent ? kinParent.nama_lengkap : kinParentId} (Tanpa duplikasi data).`;
+      } else {
+        infoSpan.style.display = "none";
+        infoSpan.textContent = "";
+      }
+    }
+
+    function handleParentChange() {
+      const mode = document.getElementById("form-mode").value;
+      const parentId = document.getElementById("f-id_ortu").value;
+      const parent = familyData.find(m => m.id === parentId);
+
+      const newGen = parent ? parent.generasi + 1 : 1;
+      document.getElementById("f-generasi").value = newGen;
+
+      updateMotherDropdown(parentId);
+
+      if (mode === "add") {
+        const siblings = getAllChildrenOfMember(parentId);
+        document.getElementById("f-anak_ke").value = siblings.length + 1;
+        document.getElementById("f-id").value = generateNextId(newGen);
+      }
+    }
+
+    function openFormModal(mode, targetId = "") {
+      if (currentRole !== "admin") return;
+      closeMemberModal();
+
+      document.getElementById("form-mode").value = mode;
+      const form = document.getElementById("member-form");
+      form.reset();
+      document.getElementById("f-file_foto").value = "";
+
+      const editSelectorBox = document.getElementById("edit-selector-box");
+
+      if (mode === "add") {
+        editSelectorBox.style.display = "none";
+        document.getElementById("form-modal-title").textContent = "➕ Tambah Anggota Keluarga Baru";
+        populateParentDropdown();
+        populateSingleKinSpouseDropdown();
+
+        const defaultParent = targetId || (familyData[0] ? familyData[0].id : "");
+        document.getElementById("f-id_ortu").value = defaultParent;
+        handleParentChange();
+        renderPhotoPreview("");
+      } else if (mode === "edit") {
+        const member = familyData.find(m => m.id === targetId) || familyData[0];
+        if (!member) return;
+
+        editSelectorBox.style.display = "flex";
+        const switchSelect = document.getElementById("f-switch-edit");
+        switchSelect.innerHTML = [...familyData]
+          .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke)
+          .map(m => `<option value="${m.id}" ${m.id === member.id ? "selected" : ""}>[Gen ${m.generasi}] ${m.nama_panggilan || m.nama_lengkap} (${m.nama_lengkap})</option>`)
+          .join("");
+
+        document.getElementById("form-modal-title").textContent = `✏️ Edit Data: ${member.nama_panggilan || member.nama_lengkap}`;
+        populateParentDropdown(member.id);
+
+        const firstKinSpouse = (member.id_pasangan_kerabat || "").split(";")[0].trim();
+        populateSingleKinSpouseDropdown(member.id, firstKinSpouse);
+
+        document.getElementById("f-id_ortu").value = member.id_ortu || "";
+        updateMotherDropdown(member.id_ortu, member.dari_pasangan || "");
+        if (member.id_ortu_kerabat) {
+          document.getElementById("f-id_ortu_kerabat").value = member.id_ortu_kerabat;
+        }
+
+        document.getElementById("f-id").value = member.id;
+        document.getElementById("f-generasi").value = member.generasi;
+        document.getElementById("f-anak_ke").value = member.anak_ke;
+        document.getElementById("f-nama_lengkap").value = member.nama_lengkap || "";
+        document.getElementById("f-nama_panggilan").value = member.nama_panggilan || "";
+        document.getElementById("f-jenis_kelamin").value = member.jenis_kelamin || "L";
+        document.getElementById("f-nama_pasangan").value = member.nama_pasangan || "";
+        document.getElementById("f-id_pasangan_kerabat").value = member.id_pasangan_kerabat || "";
+        document.getElementById("f-status").value = member.status || "Hidup";
+        document.getElementById("f-tahun_lahir").value = member.tahun_lahir || "";
+        document.getElementById("f-tahun_wafat").value = member.tahun_wafat || "";
+        document.getElementById("f-domisili").value = member.domisili || "";
+        document.getElementById("f-no_wa").value = member.no_wa || "";
+        document.getElementById("f-url_foto").value = member.url_foto || "";
+        document.getElementById("f-catatan").value = member.catatan || "";
+
+        renderPhotoPreview(member.url_foto || "");
+      }
+
+      document.getElementById("form-modal").classList.add("open");
+    }
+
+    function closeFormModal() {
+      document.getElementById("form-modal").classList.remove("open");
+    }
+
+    function saveMemberForm(event) {
+      event.preventDefault();
+      if (currentRole !== "admin") return;
+
+      const mode = document.getElementById("form-mode").value;
+      const memberObj = {
+        id: document.getElementById("f-id").value.trim(),
+        id_ortu: document.getElementById("f-id_ortu").value.trim(),
+        id_ortu_kerabat: document.getElementById("f-id_ortu_kerabat").value.trim(),
+        generasi: parseInt(document.getElementById("f-generasi").value, 10) || 1,
+        anak_ke: parseInt(document.getElementById("f-anak_ke").value, 10) || 1,
+        nama_lengkap: document.getElementById("f-nama_lengkap").value.trim(),
+        nama_panggilan: document.getElementById("f-nama_panggilan").value.trim(),
+        jenis_kelamin: document.getElementById("f-jenis_kelamin").value,
+        nama_pasangan: document.getElementById("f-nama_pasangan").value.trim(),
+        id_pasangan_kerabat: document.getElementById("f-id_pasangan_kerabat").value.trim(),
+        dari_pasangan: document.getElementById("f-dari_pasangan").value.trim(),
+        status: document.getElementById("f-status").value,
+        tahun_lahir: document.getElementById("f-tahun_lahir").value.trim(),
+        tahun_wafat: document.getElementById("f-tahun_wafat").value.trim(),
+        domisili: document.getElementById("f-domisili").value.trim(),
+        no_wa: document.getElementById("f-no_wa").value.trim(),
+        url_foto: document.getElementById("f-url_foto").value.trim(),
+        catatan: document.getElementById("f-catatan").value.trim()
+      };
+
+      if (mode === "add") {
+        familyData.push(memberObj);
+      } else {
+        const idx = familyData.findIndex(m => m.id === memberObj.id);
+        if (idx !== -1) {
+          familyData[idx] = memberObj;
+        }
+      }
+
+      syncBidirectionalSpouse(memberObj);
+
+      saveToLocalStorage();
+      setupFiltersAndStats();
+      renderAll(false);
+      closeFormModal();
+    }
+
+    function deleteMember(id) {
+      if (currentRole !== "admin") return;
+      const member = familyData.find(m => m.id === id);
+      if (!member) return;
+
+      const children = getAllChildrenOfMember(id);
+      if (children.length > 0) {
+        alert(`Tidak dapat menghapus ${member.nama_panggilan} karena masih memiliki ${children.length} data anak di bawahnya.`);
+        return;
+      }
+
+      if (confirm(`Yakin ingin menghapus data "${member.nama_lengkap}" dari silsilah?`)) {
+        familyData = familyData.filter(m => m.id !== id);
+        saveToLocalStorage();
+        setupFiltersAndStats();
+        renderAll(false);
+        closeMemberModal();
+      }
+    }
+
+    /**
+     * EKSPOR & IMPOR CSV
+     */
+    function exportToCSV() {
+      const headers = [
+        "id","id_ortu","id_ortu_kerabat","generasi","anak_ke","nama_lengkap","nama_panggilan",
+        "jenis_kelamin","nama_pasangan","id_pasangan_kerabat","dari_pasangan","status",
+        "tahun_lahir","tahun_wafat","domisili","no_wa","url_foto","catatan"
+      ];
+
+      const escapeCSV = (val) => {
+        const str = String(val ?? "");
+        return str.includes(",") || str.includes('"') || str.includes("\n")
+          ? `"${str.replace(/"/g, '""')}"`
+          : str;
+      };
+
+      const rows = familyData
+        .sort((a, b) => a.generasi - b.generasi || a.anak_ke - b.anak_ke)
+        .map(m => headers.map(h => escapeCSV(m[h])).join(","));
+
+      const csvContent = [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Data_Silsilah_Bani_Ghofur.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function openImportCSVModal() {
+      if (currentRole !== "admin") return;
+      document.getElementById("csv-file-input").value = "";
+      document.getElementById("import-csv-modal").classList.add("open");
+    }
+
+    function closeImportCSVModal() {
+      document.getElementById("import-csv-modal").classList.remove("open");
+    }
+
+    function parseCSVText(text) {
+      const cleanText = text.replace(/^\uFEFF/, "").trim();
+      if (!cleanText) return [];
+
+      const firstLine = cleanText.split(/\r?\n/)[0] || "";
+      const commaCount = (firstLine.match(/,/g) || []).length;
+      const semiCount = (firstLine.match(/;/g) || []).length;
+      const delimiter = semiCount > commaCount ? ";" : ",";
+
+      const rows = [];
+      let currentRow = [];
+      let currentVal = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < cleanText.length; i++) {
+        const char = cleanText[i];
+        const nextChar = cleanText[i + 1];
+
+        if (inQuotes) {
+          if (char === '"' && nextChar === '"') {
+            currentVal += '"';
+            i++;
+          } else if (char === '"') {
+            inQuotes = false;
+          } else {
+            currentVal += char;
+          }
+        } else {
+          if (char === '"') {
+            inQuotes = true;
+          } else if (char === delimiter) {
+            currentRow.push(currentVal);
+            currentVal = "";
+          } else if (char === "\r" && nextChar === "\n") {
+            currentRow.push(currentVal);
+            rows.push(currentRow);
+            currentRow = [];
+            currentVal = "";
+            i++;
+          } else if (char === "\n") {
+            currentRow.push(currentVal);
+            rows.push(currentRow);
+            currentRow = [];
+            currentVal = "";
+          } else {
+            currentVal += char;
+          }
+        }
+      }
+      if (currentVal !== "" || currentRow.length > 0) {
+        currentRow.push(currentVal);
+        rows.push(currentRow);
+      }
+
+      return rows;
+    }
+
+    function processCSVImport() {
+      if (currentRole !== "admin") return;
+      const fileInput = document.getElementById("csv-file-input");
+      const mode = document.getElementById("csv-import-mode").value;
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert("Mohon pilih file CSV terlebih dahulu.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const rows = parseCSVText(e.target.result);
+          if (rows.length < 2) {
+            alert("File CSV kosong atau tidak memiliki baris data.");
+            return;
+          }
+
+          const rawHeaders = rows[0].map(h => h.trim().toLowerCase());
+          if (!rawHeaders.includes("id") || !rawHeaders.includes("nama_lengkap")) {
+            alert("Format header CSV tidak valid! Pastikan terdapat kolom 'id' dan 'nama_lengkap'.");
+            return;
+          }
+
+          const importedMembers = [];
+          for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i];
+            if (cols.length === 1 && !cols[0].trim()) continue;
+
+            const rowMap = {};
+            rawHeaders.forEach((h, idx) => {
+              rowMap[h] = (cols[idx] ?? "").trim();
+            });
+
+            if (!rowMap.id || !rowMap.nama_lengkap) continue;
+
+            importedMembers.push({
+              id: rowMap.id,
+              id_ortu: rowMap.id_ortu || "",
+              id_ortu_kerabat: rowMap.id_ortu_kerabat || "",
+              generasi: parseInt(rowMap.generasi, 10) || 1,
+              anak_ke: parseInt(rowMap.anak_ke, 10) || 1,
+              nama_lengkap: rowMap.nama_lengkap,
+              nama_panggilan: rowMap.nama_panggilan || rowMap.nama_lengkap,
+              jenis_kelamin: (rowMap.jenis_kelamin || "L").toUpperCase() === "P" ? "P" : "L",
+              nama_pasangan: rowMap.nama_pasangan || "",
+              id_pasangan_kerabat: rowMap.id_pasangan_kerabat || "",
+              dari_pasangan: rowMap.dari_pasangan || "",
+              status: rowMap.status || "Hidup",
+              tahun_lahir: rowMap.tahun_lahir || "",
+              tahun_wafat: rowMap.tahun_wafat || "",
+              domisili: rowMap.domisili || "",
+              no_wa: rowMap.no_wa || "",
+              url_foto: rowMap.url_foto || "",
+              catatan: rowMap.catatan || ""
+            });
+          }
+
+          if (importedMembers.length === 0) {
+            alert("Tidak ada data anggota valid yang ditemukan di dalam file CSV.");
+            return;
+          }
+
+          if (mode === "replace") {
+            familyData = importedMembers;
+          } else {
+            importedMembers.forEach(item => {
+              const existingIdx = familyData.findIndex(m => m.id === item.id);
+              if (existingIdx !== -1) {
+                familyData[existingIdx] = item;
+              } else {
+                familyData.push(item);
+              }
+            });
+          }
+
+          familyData.forEach(m => syncBidirectionalSpouse(m));
+
+          saveToLocalStorage();
+          setupFiltersAndStats();
+          renderAll(false);
+          closeImportCSVModal();
+          alert(`Berhasil mengimpor ${importedMembers.length} data anggota keluarga!`);
+        } catch (err) {
+          alert("Terjadi kesalahan saat membaca file CSV: " + err.message);
+        }
+      };
+
+      reader.readAsText(file, "UTF-8");
+    }
+
+    function resetToDefault() {
+      if (confirm("Kembalikan ke data contoh awal Bani Ghofur? Semua perubahan lokal akan direset.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        familyData = JSON.parse(JSON.stringify(DEFAULT_FAMILY_DATA));
+        setupFiltersAndStats();
+        renderAll(false);
+      }
+    }
+
+    function setupFiltersAndStats() {
+      const totalMembers = familyData.length;
+      const generations = [...new Set(familyData.map(m => m.generasi))].sort();
+      const cities = [...new Set(familyData.map(m => m.domisili).filter(Boolean))];
+      const gen2Branches = familyData.filter(m => m.generasi === 2).sort((a, b) => a.anak_ke - b.anak_ke);
+
+      let kinMarriageLinks = 0;
+      familyData.forEach(m => {
+        getSpouseObjects(m).forEach(sp => {
+          if (sp.kinId) kinMarriageLinks++;
+        });
+      });
+      const totalKinCouples = Math.ceil(kinMarriageLinks / 2);
+
+      document.getElementById("stats-bar").innerHTML = `
+        <div class="stat-pill">👥 <strong>${totalMembers}</strong> Keturunan</div>
+        <div class="stat-pill">🌿 <strong>${generations.length}</strong> Generasi</div>
+        <div class="stat-pill">🏡 <strong>${gen2Branches.length}</strong> Jalur Anak Mbah Ghofur</div>
+        <div class="stat-pill">💞 <strong>${totalKinCouples}</strong> Pernikahan Kerabat</div>
+        <div class="stat-pill">📍 <strong>${cities.length}</strong> Kota Domisili</div>
+      `;
+
+      const branchSelect = document.getElementById("branch-filter");
+      const prevBranch = branchSelect.value;
+      branchSelect.innerHTML = `<option value="ALL">Semua Jalur Keturunan</option>` +
+        gen2Branches.map(b => `<option value="${b.id}">Jalur ${b.nama_panggilan || b.nama_lengkap}</option>`).join("");
+      if ([...branchSelect.options].some(o => o.value === prevBranch)) branchSelect.value = prevBranch;
+
+      const genSelect = document.getElementById("gen-filter");
+      const prevGen = genSelect.value;
+      genSelect.innerHTML = `<option value="ALL">Semua Generasi</option>` +
+        generations.map(g => `<option value="${g}">${GEN_LABELS[g] || "Generasi " + g}</option>`).join("");
+      if ([...genSelect.options].some(o => o.value === prevGen)) genSelect.value = prevGen;
+    }
+
+    function switchView(mode) {
+      currentView = mode;
+      document.getElementById("btn-tree-view").classList.toggle("active", mode === "tree");
+      document.getElementById("btn-dir-view").classList.toggle("active", mode === "dir");
+      document.getElementById("tree-viewport").style.display = mode === "tree" ? "block" : "none";
+      document.getElementById("directory-viewport").style.display = mode === "dir" ? "grid" : "none";
+      document.getElementById("floating-dock").style.display = mode === "tree" ? "flex" : "none";
+
+      if (mode === "tree") {
+        applyZoomDimensions();
+        if (matchedCardElements.length > 0) {
+          focusMatchAtIndex(currentMatchIndex, true);
+        }
+      }
+    }
+
+    function applyZoomDimensions() {
+      const canvas = document.getElementById("tree-canvas");
+      const wrapper = document.getElementById("tree-scale-wrapper");
+      if (!canvas || !wrapper) return;
+
+      canvas.style.transform = `scale(${currentZoom})`;
+      const pct = `${Math.round(currentZoom * 100)}%`;
+      const btnReset = document.getElementById("btn-zoom-reset");
+      const dockLabel = document.getElementById("dock-zoom-label");
+      if (btnReset) btnReset.textContent = pct;
+      if (dockLabel) dockLabel.textContent = pct;
+
+      requestAnimationFrame(() => {
+        const naturalW = canvas.scrollWidth;
+        const naturalH = canvas.scrollHeight;
+        wrapper.style.width = `${Math.ceil(naturalW * currentZoom)}px`;
+        wrapper.style.height = `${Math.ceil(naturalH * currentZoom)}px`;
+      });
+    }
+
+    function adjustZoom(delta) {
+      currentZoom = Math.min(1.6, Math.max(0.4, +(currentZoom + delta).toFixed(2)));
+      applyZoomDimensions();
+    }
+
+    function resetZoom() {
+      currentZoom = window.innerWidth <= 640 ? 0.78 : 1;
+      applyZoomDimensions();
+      setTimeout(centerRootTree, 60);
+    }
+
+    function setupViewportInteractions() {
+      const viewport = document.getElementById("tree-viewport");
+      let isMouseDown = false;
+      let startX = 0, startY = 0;
+      let scrollLeftStart = 0, scrollTopStart = 0;
+
+      viewport.addEventListener("mousedown", (e) => {
+        if (e.button !== 0 || e.target.closest("button, a, input, select")) return;
+        isMouseDown = true;
+        isDraggingCanvas = false;
+        startX = e.pageX - viewport.offsetLeft;
+        startY = e.pageY - viewport.offsetTop;
+        scrollLeftStart = viewport.scrollLeft;
+        scrollTopStart = viewport.scrollTop;
+      });
+
+      window.addEventListener("mousemove", (e) => {
+        if (!isMouseDown) return;
+        const x = e.pageX - viewport.offsetLeft;
+        const y = e.pageY - viewport.offsetTop;
+        const walkX = x - startX;
+        const walkY = y - startY;
+
+        if (Math.abs(walkX) > 6 || Math.abs(walkY) > 6) {
+          isDraggingCanvas = true;
+          viewport.classList.add("dragging");
+          viewport.scrollLeft = scrollLeftStart - walkX;
+          viewport.scrollTop = scrollTopStart - walkY;
+        }
+      });
+
+      window.addEventListener("mouseup", () => {
+        isMouseDown = false;
+        viewport.classList.remove("dragging");
+        setTimeout(() => { isDraggingCanvas = false; }, 50);
+      });
+
+      viewport.addEventListener("wheel", (e) => {
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          adjustZoom(e.deltaY < 0 ? 0.08 : -0.08);
+        }
+      }, { passive: false });
+
+      let initialPinchDist = null;
+      let initialZoomLevel = 1;
+
+      viewport.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 2) {
+          initialPinchDist = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+          );
+          initialZoomLevel = currentZoom;
+        }
+      }, { passive: true });
+
+      viewport.addEventListener("touchmove", (e) => {
+        if (e.touches.length === 2 && initialPinchDist) {
+          e.preventDefault();
+          const currentDist = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+          );
+          const ratio = currentDist / initialPinchDist;
+          currentZoom = Math.min(1.6, Math.max(0.4, +(initialZoomLevel * ratio).toFixed(2)));
+          applyZoomDimensions();
+        }
+      }, { passive: false });
+
+      viewport.addEventListener("touchend", () => {
+        initialPinchDist = null;
+      });
+    }
+
+    function initApp() {
+      const savedLocal = localStorage.getItem(STORAGE_KEY);
+      if (savedLocal) {
+        try {
+          familyData = JSON.parse(savedLocal);
+        } catch (e) {
+          familyData = JSON.parse(JSON.stringify(DEFAULT_FAMILY_DATA));
+        }
+      } else {
+        familyData = JSON.parse(JSON.stringify(DEFAULT_FAMILY_DATA));
+      }
+
+      const founder = familyData.find(m => !m.id_ortu) || familyData[0];
+      if (founder && !founder.url_foto) {
+        founder.url_foto = DEFAULT_FOUNDER_PHOTO;
+      }
+
+      currentZoom = window.innerWidth <= 640 ? 0.78 : 1;
+
+      const savedRole = localStorage.getItem(ROLE_STORAGE_KEY) || "umum";
+      switchRole(savedRole);
+
+      setupFiltersAndStats();
+      renderAll(false);
+      setupViewportInteractions();
+
+      const searchInput = document.getElementById("search-input");
+      searchInput.addEventListener("input", () => {
+        currentMatchIndex = 0;
+        renderAll(true);
+      });
+
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && matchedCardElements.length > 0) {
+          e.preventDefault();
+          navigateSearchResult(1);
+          searchInput.blur();
+        }
+      });
+
+      document.getElementById("branch-filter").addEventListener("change", () => {
+        renderAll(false);
+        setTimeout(centerRootTree, 80);
+      });
+
+      document.getElementById("gen-filter").addEventListener("change", () => {
+        if (document.getElementById("gen-filter").value !== "ALL" && currentView === "tree") {
+          switchView("dir");
+        }
+        renderAll(false);
+      });
+
+      window.addEventListener("resize", applyZoomDimensions);
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
